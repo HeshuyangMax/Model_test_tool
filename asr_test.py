@@ -40,27 +40,41 @@ def cer(ref: str, hyp: str) -> float:
     assert type(hyp) == str
 
     dis = levenshtein_distance(ref, hyp)
-    cer = dis / len(ref)
-    return cer
-
+    cerOutput = dis / len(ref)
+    return cerOutput
 
 # 计算句错率
 # ref: 标注答案的字符串列表
 # hyp: 模型推理的结果字符串列表
 # return: 句错率浮点型
 def ser(ref: list[str], hyp: list[str]) -> float:
+    assert type(ref) == list
+    assert type(hyp) == list
+    assert len(ref) == len(hyp)
 
     total = len(ref)
+    cerOutput = 0.0
     err = 0
     for i in range(total):
-        cer = cer(ref[i], hyp[i])
-        if cer == 0:
+        cerOutput = cer(ref[i], hyp[i])
+        if cerOutput == 0.0:
             err = err + 1
-    ser = err / total
-    return ser
+    serOutput = err / total
+    return serOutput
 
 if __name__ == "__main__":
-    output = cer("你吃饭了吗", "你吃饭了吗")
-    if output == 0:
-        print("perfect")
-    print(output)
+    # 字错率测试，应输出正确结果
+    output0 = cer("你吃饭了吗", "你吃饭了吗")
+    print(output0)
+
+    # 句错率测试，应输出正确结果
+    ref1 = ["我准备睡觉了", "你吃饭了吗"]
+    hyp1 = ["我准备睡了", "你吃饭了吗"]
+    output1 = ser(ref=ref1, hyp=hyp1)
+    print(output1)
+
+    # 句错率测试，应报错说明2个list长度不一致
+    ref2 = ["我准备睡觉了"]
+    hyp2 = ["我准备睡了", "你吃饭了吗"]
+    output2 = ser(ref=ref2, hyp=hyp2)
+    print(output2)
