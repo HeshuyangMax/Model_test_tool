@@ -1,3 +1,4 @@
+from Levenshtein import *
 # 计算两个字符串的最短编辑距离
 # ref: 标注答案字符串
 # hyp: 模型推理结果字符串
@@ -63,6 +64,16 @@ def ser(ref: list[str], hyp: list[str]) -> float:
     return serOutput
 
 if __name__ == "__main__":
+    # levenstein距离检查
+    refstr = "你吃饭了吗"
+    hypstr = "你有没有吃饭"
+    dis0 = distance(refstr, hypstr)
+    dis1 = levenshtein_distance(refstr, hypstr)
+    print("dis0: ")
+    print(dis0)
+    print("dis1: ")
+    print(dis1)
+
     # 字错率测试，应输出正确结果
     output0 = cer("你吃饭了吗", "你吃饭了吗")
     print(output0)
